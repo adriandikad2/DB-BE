@@ -57,6 +57,10 @@ app.use("/api/auth", authRoutes)
 app.use("/api/rooms", roomRoutes)
 app.use("/api/game", gameRoutes)
 
+// Root endpoint
+app.get("/", (req, res) => res.send("Hello World!"))
+
+
 // Health check endpoint
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok", message: "Server is running" })
