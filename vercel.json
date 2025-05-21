@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "crons": [
+    {
+      "path": "/api/cron/check-game-phases",
+      "schedule": "*/30 * * * * *"
+    }
+  ]
+}
