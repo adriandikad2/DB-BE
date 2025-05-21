@@ -2,5 +2,12 @@
   "version": 2,
   "env": {
     "NODE_ENV": "production"
-  }
+  },
+  "rewrites": [
+    { "source": "/api/auth/:action", "destination": "/api/auth" },
+    { "source": "/api/rooms/:roomId/:action", "destination": "/api/rooms" },
+    { "source": "/api/rooms", "destination": "/api/rooms" },
+    { "source": "/api/game/:roomId/:action", "destination": "/api/game" },
+    { "source": "/api/game/vote", "destination": "/api/game" }
+  ]
 }
