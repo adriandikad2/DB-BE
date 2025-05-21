@@ -20,14 +20,13 @@ const { pool } = require("./config/db")
 const app = express()
 const PORT = process.env.PORT || 5000
 
-// Middleware
-const allowedOrigins = [
-  "https://drawbattle.vercel.app", // Your frontend prod domain
-  "http://localhost:5173"          // Local dev (optional)
-]
-
 app.use(cors({
   origin: function (origin, callback) {
+    console.log("CORS origin:", origin); // Add this
+    const allowedOrigins = [
+      "https://drawbattle.vercel.app",
+      "http://localhost:5173"
+    ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
