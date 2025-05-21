@@ -1,38 +1,4 @@
 const { pool } = require("./_config/db");
-const { authenticateToken } = require("./_middleware/auth");
-
-export default async function handler(req, res) {
-  try {
-    const authResult = await authenticateToken(req);
-    if (authResult.status) {
-      return res.status(authResult.status).json({ message: authResult.message });
-    }
-
-    const userId = authResult.user.id;
-    const action = req.query.action || '';
-    const roomId = req.query.roomId;
-
-    switch (true) {
-      case req.method === 'GET' && !action && !roomId:
-        return handleListRooms(req, res);
-      case req.method === 'POST' && !action && !roomId:
-        return handleCreateRoom(req, res, userId);
-      case action === 'join':
-        return handleJoinRoom(req, res, userId, roomId);
-      case action === 'leave':
-        return handleLeaveRoom(req, res, userId, roomId);
-      case action === 'start':
-        return handleStartGame(req, res, userId, roomId);
-      case !action && roomId:
-        return handleGetRoom(req, res, roomId);
-      default:
-        return res.status(404).json({ message: 'Action not found' });
-    }
-  } catch (error) {
-    console.error("Rooms error:", error);
-    return res.status(500).json({ message: "Server error" });
-  }
-}
 
 async function handleListRooms(req, res) {
   try {
@@ -252,3 +218,12 @@ async function handleGetRoom(req, res, roomId) {
     res.status(500).json({ message: "Server error" });
   }
 }
+
+module.exports = {
+  handleListRooms,
+  handleCreateRoom,
+  handleJoinRoom,
+  handleLeaveRoom,
+  handleStartGame,
+  handleGetRoom,
+};

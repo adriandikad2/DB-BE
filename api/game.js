@@ -1,5 +1,4 @@
 const { pool } = require("./_config/db");
-const { authenticateToken } = require("./_middleware/auth");
 const formidable = require('formidable');
 const { Storage } = require('@google-cloud/storage');
 
@@ -9,43 +8,6 @@ const storage = new Storage({
 });
 
 const bucket = storage.bucket(process.env.GOOGLE_CLOUD_BUCKET);
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-export default async function handler(req, res) {
-  try {
-    const authResult = await authenticateToken(req);
-    if (authResult.status) {
-      return res.status(authResult.status).json({ message: authResult.message });
-    }
-
-    const userId = authResult.user.id;
-    const action = req.query.action || '';
-    const roomId = req.query.roomId;
-
-    switch (action) {
-      case 'state':
-        return handleGameState(req, res, userId, roomId);
-      case 'submit-drawing':
-        return handleSubmitDrawing(req, res, userId, roomId);
-      case 'drawing-to-vote':
-        return handleDrawingToVote(req, res, userId, roomId);
-      case 'vote':
-        return handleVote(req, res, userId);
-      case 'leaderboard':
-        return handleLeaderboard(req, res, roomId);
-      default:
-        return res.status(404).json({ message: 'Action not found' });
-    }
-  } catch (error) {
-    console.error("Game error:", error);
-    return res.status(500).json({ message: "Server error" });
-  }
-}
 
 async function handleGameState(req, res, userId, roomId) {
   try {
@@ -419,3 +381,11 @@ async function handleLeaderboard(req, res, roomId) {
     res.status(500).json({ message: "Server error" });
   }
 }
+
+module.exports = {
+  handleGameState,
+  handleSubmitDrawing,
+  handleDrawingToVote,
+  handleVote,
+  handleLeaderboard,
+};

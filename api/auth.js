@@ -3,30 +3,6 @@ const { authenticateToken } = require("./_middleware/auth");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-export default async function handler(req, res) {
-  const action = req.query.action || '';
-
-  try {
-    switch (action) {
-      case 'login':
-        return handleLogin(req, res);
-      case 'register':
-        return handleRegister(req, res);
-      case 'me':
-        return handleMe(req, res);
-      case 'profile':
-        return handleProfile(req, res);
-      case 'password':
-        return handlePassword(req, res);
-      default:
-        return res.status(404).json({ message: 'Action not found' });
-    }
-  } catch (error) {
-    console.error(`Auth error (${action}):`, error);
-    return res.status(500).json({ message: 'Server error' });
-  }
-}
-
 async function handleLogin(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
@@ -194,3 +170,11 @@ async function handlePassword(req, res) {
     res.status(500).json({ message: "Server error" });
   }
 }
+
+module.exports = {
+  handleLogin,
+  handleRegister,
+  handleMe,
+  handleProfile,
+  handlePassword,
+};
