@@ -6,7 +6,7 @@
   "crons": [
     {
       "path": "/api/cron/check-game-phases",
-      "schedule": "*/30 * * * * *"
+      "schedule": "*/30 * * * *"
     }
   ]
 }
